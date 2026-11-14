@@ -26,6 +26,7 @@
   },
   "files": [
     "dist",
+    "references",
     "scripts",
     "templates",
     "SKILL.md",
@@ -36,7 +37,7 @@
     "build": "tsc -p tsconfig.json",
     "dev": "tsx src/cli.ts",
     "typecheck": "tsc --noEmit",
-    "test": "npm run typecheck && npm run build && node dist/cli.js check --config examples/static-site/showcase.config.yaml",
+    "test": "npm run typecheck && npm run build && node --test && node dist/cli.js check --config examples/static-site/showcase.config.yaml",
     "install:browser": "playwright install chromium"
   },
   "dependencies": {

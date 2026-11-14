@@ -281,9 +281,10 @@ export async function capture(options: CaptureOptions): Promise<Manifest> {
   await ensureDir(path.join(outDir, 'screens'))
 
   const server = await startServer(config, cwd)
-  const browser = await launchBrowser(!options.headed)
+  let browser: Browser | undefined
 
   try {
+    browser = await launchBrowser(!options.headed)
     const scenes = options.only
       ? config.scenes.filter((scene) => scene.name === options.only)
       : config.scenes
@@ -326,8 +327,11 @@ export async function capture(options: CaptureOptions): Promise<Manifest> {
 
     return manifest
   } finally {
-    await browser.close()
-    await server.stop()
+    try {
+      await browser?.close()
+    } finally {
+      await server.stop()
+    }
   }
 }
 
@@ -342,9 +346,10 @@ export async function check(options: CaptureOptions): Promise<void> {
     : options.config
 
   const server = await startServer(config, cwd)
-  const browser = await launchBrowser(!options.headed)
+  let browser: Browser | undefined
 
   try {
+    browser = await launchBrowser(!options.headed)
     const scenes = options.only
       ? config.scenes.filter((scene) => scene.name === options.only)
       : config.scenes
@@ -410,7 +415,10 @@ export async function check(options: CaptureOptions): Promise<void> {
       }
     }
   } finally {
-    await browser.close()
-    await server.stop()
+    try {
+      await browser?.close()
+    } finally {
+      await server.stop()
+    }
   }
 }
